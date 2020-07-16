@@ -1,0 +1,208 @@
+javascript es un lenguaje:
+interpretado: (lee linea por linea). Los errores salen cuando llega la linea al error. just in time compiler (el motor v8 de js tiene esto). El lenguaje JS termina siendo un lenguaje compilado.
+orientado a objetos: (escuché que es basado en objetos)
+debilmente tipado: podes hacer operaciones entre tipos de datos y funciona.
+dinámico: Se saltéa el paso de compilar el código antes de probarlo. Directamente corre en el navegador.
+
+forwards: Un lenguaje que funciona así, cuando sale una nueva version, ya puede ser usada sin hacer cambios.
+
+JS es Backwards Compatible: Las nuevas versiones que salen del lenguaje no pueden ser usadas automáticamente. Pero no va a romper tu código. Se va a poder usar automáticamente cuando la W3C HTML lo acepte como estandar y lo aplique a los navegadores por defecto. Se pueden usar con el compilador BABEL. Este traduce el código nuevo a la version estandar que el navegador entiende.
+
+W3C aceptó como nuevo lenguaje para hacer web el WebAssembly. (Averiguar sobre esto)
+
+framebork: electron (para hacer apps de escritorio en JS)
+
+componentes principales en JS: datos que guardamos en memoria y tareas que haremos con esa data.
+
+funciones declarativas y de expresion
+una declarativa: (cuando llega a la linea, ocupa memoria para este código)
+function miFuncion(){
+    ...codigo
+}
+
+función de expresion: (variable que guarda una función)
+let miFuncion = function(){
+    ...codigo
+}
+
+hoisting: significa que podes hacer uso de una función antes de ser declarada.
+a las funciones de expresión no se les aplica hoisting y si o si deben ser declaradas antes de ser llamadas. (hoisting solo funcionaba con las palabras reservadas var y function, ahora se usa let y const)
+
+Scope: es el alcance que tienen las variables en el código.
+
+Ej js existe la funcion Boolean() con la que podriamos validar que valores son falsos o verdaderos.
+
+En js podemos crear objetos e instanciarlos con la palabra reservada new haciendo una funcion constructora:
+function auto(marca, modelo, año)
+{
+    this.marca = marca;
+    this.modelo = modelo;
+    this.año = año;
+}
+
+let nuevoAuto = new auto("ford","focus",2003);
+
+en el navegador, cuando declaramos una variable de tipo global, realmente, esta está contenida en el objeto global window.
+podemos decir:
+window.variable
+
+
+destructuring de objetos:
+var nombre = persona.nombre =>
+var { nombre } = persona
+
+
+parámetros como referencia o como valor:
+los objetos que pasamos por parámetro se modifican en el objeto real. (efecto de lado)
+para que no se modifique el objeto real, podríamos retornar un nuevo objeto con el valor nuevo.
+
+metodos para los arrays:
+
+.map
+.filter
+.reduce   
+.find
+
+const reducer = (acum, persona) => {
+    return acum + persona.cantidadDeLibros
+}
+car totalDeLibros = personas.reduce(reducer, 0);
+
+clases en javascript: prototipos:
+
+prototipo:
+function Persona(nomb,apel){
+    this.nombre = nomb;
+    this.apellido = apel;
+}
+//javascript implicitamente hace return de this
+
+Persona.prototype.saludar = function(){
+    console.log(`hola, soy ${this.nombre}, y estoy saludando`)
+}
+
+var fede = new persona('fede','garcia');
+fede.saludar();
+
+con las arrow function, el this cambia. cambia el contexto.
+this va a apuntar a quien sea this fuera de la funcion y no quien está en la funcion.
+
+Herencia prototipal en javascript:
+crearemos un subprototipo de por ej la clase persona.
+
+function Desarrollador(nombre, apellido){
+    this.nombre = nombre;
+    this.apellido = apellido;
+}
+
+Desarrollador.prototype.saludar = function () {
+    console.log(`Hola, soy ${this.nombre} y soy desarrollador);
+}
+
+para hacer la herencia tendremos que hacer una funcion: (ahora hay un metodo mejor para hacer esto)
+
+function heredaDe(prototipoHijo, prototitoPadre){
+    var fn = function(){} //creamos una clase que no hace nada
+    fn.prototype = prototipoPadre.prototype; //al prototipo de esa clase le asignamos el prototipo de prototipoPadre
+    prototipoHijo.prototype = new fn; //dentro de prototype de hijo guardamos un nuevo fn que en este caso es un prototipo de padre
+    prototipoHijo.prototype.constructor = prototipoHijo; //prot
+}
+
+luego debemos llamar a la funcion heredaDe
+
+heredaDe(desarrollador, persona);
+
+
+clases en javascript: (por debajo seguiran siendo prototipos)
+
+class Persona{
+    constructor(nombre, apellido, altura){
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.altura = altura;
+    }
+    soyAlto(){
+        console.log(soyalto)
+    }
+    saludar(){
+        console.log("saludo")
+    }
+}
+
+class Desarrollador extends Persona {
+    constructor(nombre, apellido, altura){
+        super(nombre,apellido,altura); //aca llamamos al constructor padre asi tendremos los metodos del padre.
+    }
+    saludo(){
+        console.log("saludo de desarrollador");
+    }
+}
+
+asincronismo en javascript:
+
+eventLoop se le llama el delegar tareas a otro evento
+callStack o pila de ejecución. se van guardando las ejecuciones que el codigo tiene. Aca no se guardan las callbacks que enviamos a otro evento para que las ejecute.
+
+el callback que enviamos a otro evento se guarda en la cola de tareas. segun en orden que llegan. (aca se guardan las peticiones a servidores, ejecuciones client-server, llamadas http)
+
+cuando la pila de ejecución se queda sin tareas, ahi va a buscar lo que hay en la cola de tareas y lo pasa a la pila de ejecución.
+
+
+los estados de una promise:
+pending.
+si se resuelve(resolve) -> fulfilled
+si se rechaza(reject) -> rejected
+
+new Promise(function(resolve, reject){
+    ... codigo
+})
+
+para aplicar recursividad en javascript:
+
+podemos crear una función y cuando haces el return retornar la ejecución de esta funcion nuevamente.
+Adentro de la función debemos crear un código para que haga el corte del flujo.
+siempre tenemos que tener nuestro caso base y el caso de recursividad.
+el caso base es cuando se debe terminar la ejecución del código
+
+function divisionEntera(dividendo, divisor)
+{
+    if(dividendo < divisor)
+    {
+        return 0
+    }
+    return 1 + divisionEntera(dividendo-divisor, divisor);
+}
+
+haciendo factorial en javascript con un cache para ahorrar memoria
+
+function factorial(n){
+    if(!this.cache){
+        this.cache = {}
+    }
+    if(this.cache[n]){
+        return this.cache[n]
+    }
+
+    if(n === 1){
+        return 1
+    }
+
+    this.cache[n] = n * factorial(n -1)
+    return this.cache[n]
+}
+
+closures de javascript (cloushur) es una función que recuerda el estado de las cosas cuando fue invocada.
+
+function crearSaludo(finalDeFrase) {
+    return function (nombre) {
+        console.log(`Hola ${nombre} ${finalDeFrase}`)
+    }
+}
+
+const saludoArgentino = crearSaludo('che');
+const saludoMexicano = crearSaludo('guey');
+const saludoColombiano = crearSaludo('amigo');
+
+saludoArgentino('fede');
+saludoMexicano('fede');
+
